@@ -201,37 +201,34 @@ window.Quarto = {
 <span id="cb7-15"><a href="#cb7-15" aria-hidden="true" tabindex="-1"></a>  pval <span class="ot">&lt;-</span> <span class="dv">2</span><span class="sc">*</span>(<span class="dv">1</span><span class="sc">-</span><span class="fu">pt</span>(<span class="fu">abs</span>(tstat), df))</span>
 <span id="cb7-16"><a href="#cb7-16" aria-hidden="true" tabindex="-1"></a>  </span>
 <span id="cb7-17"><a href="#cb7-17" aria-hidden="true" tabindex="-1"></a>  </span>
-<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">'beta'</span> <span class="ot">=</span> beta, <span class="st">'SE'</span> <span class="ot">=</span> SE, <span class="st">'tstat'</span> <span class="ot">=</span> tstat, <span class="st">'pval'</span><span class="ot">=</span>pval))</span>
-<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>}</span>
-<span id="cb7-20"><a href="#cb7-20" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-21"><a href="#cb7-21" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb7-22"><a href="#cb7-22" aria-hidden="true" tabindex="-1"></a>df_cars <span class="ot">&lt;-</span> datasets<span class="sc">::</span>cars</span>
-<span id="cb7-23"><a href="#cb7-23" aria-hidden="true" tabindex="-1"></a>speed <span class="ot">&lt;-</span> df_cars<span class="sc">$</span>speed</span>
-<span id="cb7-24"><a href="#cb7-24" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> df_cars<span class="sc">$</span>dist</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb7-18"><a href="#cb7-18" aria-hidden="true" tabindex="-1"></a>  <span class="fu">return</span>(<span class="fu">list</span>(<span class="st">'beta'</span> <span class="ot">=</span> <span class="fu">t</span>(beta), <span class="st">'SE'</span> <span class="ot">=</span> SE, <span class="st">'tstat'</span> <span class="ot">=</span> <span class="fu">t</span>(tstat), <span class="st">'pval'</span><span class="ot">=</span><span class="fu">t</span>(pval)))</span>
+<span id="cb7-19"><a href="#cb7-19" aria-hidden="true" tabindex="-1"></a>}</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 </div>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">matrix</span>(dist, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="co"># response</span></span>
-<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>design.matrix <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, speed) <span class="co"># design matrix has first column as the intercept (1s) and second column as predictor</span></span>
-<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(<span class="fu">solve.beta</span>(design.matrix, response))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>df_cars <span class="ot">&lt;-</span> datasets<span class="sc">::</span>cars</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>speed <span class="ot">&lt;-</span> df_cars<span class="sc">$</span>speed</span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a>dist <span class="ot">&lt;-</span> df_cars<span class="sc">$</span>dist</span>
+<span id="cb8-4"><a href="#cb8-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb8-5"><a href="#cb8-5" aria-hidden="true" tabindex="-1"></a>response <span class="ot">&lt;-</span> <span class="fu">matrix</span>(dist, <span class="at">ncol =</span> <span class="dv">1</span>) <span class="co"># response</span></span>
+<span id="cb8-6"><a href="#cb8-6" aria-hidden="true" tabindex="-1"></a>design.matrix <span class="ot">&lt;-</span> <span class="fu">cbind</span>(<span class="dv">1</span>, speed) <span class="co"># design matrix has first column as the intercept (1s) and second column as predictor</span></span>
+<span id="cb8-7"><a href="#cb8-7" aria-hidden="true" tabindex="-1"></a>beta.stats.manual <span class="ot">&lt;-</span> <span class="fu">solve.beta</span>(design.matrix, response)</span>
+<span id="cb8-8"><a href="#cb8-8" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(beta.stats.manual)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
 <pre><code>$beta
-            [,1]
-      -17.579095
-speed   3.932409
+                  speed
+[1,] -17.57909 3.932409
 
 $SE
               speed 
 6.7584402 0.4155128 
 
 $tstat
-           [,1]
-      -2.601058
-speed  9.463990
+                 speed
+[1,] -2.601058 9.46399
 
 $pval
-              [,1]
-      1.231882e-02
-speed 1.489919e-12</code></pre>
+                       speed
+[1,] 0.01231882 1.489919e-12</code></pre>
 </div>
 </div>
 </section>
@@ -240,29 +237,27 @@ speed 1.489919e-12</code></pre>
 <p>Check that you get the same estimates as when fitting the linear regression model using lm() in R.</p>
 <div class="cell">
 <div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a>m1 <span class="ot">&lt;-</span> <span class="fu">lm</span>(df_cars<span class="sc">$</span>dist <span class="sc">~</span> df_cars<span class="sc">$</span>speed)</span>
-<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(m1)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>m1.beta.stats <span class="ot">&lt;-</span> <span class="fu">summary</span>(m1)<span class="sc">$</span>coefficients</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a>beta.stats.lm <span class="ot">&lt;-</span> <span class="fu">list</span>(<span class="st">'beta'</span> <span class="ot">=</span> m1.beta.stats[,<span class="dv">1</span>], <span class="st">'SE'</span> <span class="ot">=</span> m1.beta.stats[,<span class="dv">2</span>], <span class="st">'tstat'</span> <span class="ot">=</span> m1.beta.stats[,<span class="dv">3</span>], <span class="st">'pval'</span> <span class="ot">=</span> m1.beta.stats[,<span class="dv">4</span>])</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">print</span>(beta.stats.lm)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output cell-output-stdout">
-<pre><code>
-Call:
-lm(formula = df_cars$dist ~ df_cars$speed)
+<pre><code>$beta
+  (Intercept) df_cars$speed 
+   -17.579095      3.932409 
 
-Residuals:
-    Min      1Q  Median      3Q     Max 
--29.069  -9.525  -2.272   9.215  43.201 
+$SE
+  (Intercept) df_cars$speed 
+    6.7584402     0.4155128 
 
-Coefficients:
-              Estimate Std. Error t value Pr(&gt;|t|)    
-(Intercept)   -17.5791     6.7584  -2.601   0.0123 *  
-df_cars$speed   3.9324     0.4155   9.464 1.49e-12 ***
----
-Signif. codes:  0 '***' 0.001 '**' 0.01 '*' 0.05 '.' 0.1 ' ' 1
+$tstat
+  (Intercept) df_cars$speed 
+    -2.601058      9.463990 
 
-Residual standard error: 15.38 on 48 degrees of freedom
-Multiple R-squared:  0.6511,    Adjusted R-squared:  0.6438 
-F-statistic: 89.57 on 1 and 48 DF,  p-value: 1.49e-12</code></pre>
+$pval
+  (Intercept) df_cars$speed 
+ 1.231882e-02  1.489836e-12 </code></pre>
 </div>
 </div>
-<p>?apropos()</p>
 </section>
 
 </main>
