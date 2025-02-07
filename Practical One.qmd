@@ -64,7 +64,7 @@ solve.beta <- function(X, Y){
   pval <- 2*(1-pt(abs(tstat), df))
   
   
-  return(list('beta' = beta, 'SE' = SE, 'tstat' = tstat, 'pval'=pval))
+  return(list('beta' = t(beta), 'SE' = SE, 'tstat' = t(tstat), 'pval'=t(pval)))
 }
 ```
 
@@ -75,7 +75,8 @@ dist <- df_cars$dist
 
 response <- matrix(dist, ncol = 1) # response
 design.matrix <- cbind(1, speed) # design matrix has first column as the intercept (1s) and second column as predictor
-print(solve.beta(design.matrix, response))
+beta.stats.manual <- solve.beta(design.matrix, response)
+print(beta.stats.manual)
 ```
 
 ## Question 4
@@ -85,7 +86,11 @@ Check that you get the same estimates as when fitting the linear regression mode
 ```{r}
 m1 <- lm(df_cars$dist ~ df_cars$speed)
 summary(m1)
-
+m1.beta.stats <- summary(m1)$coefficients
+beta.stats.lm <- list('beta' = m1.beta.stats[,1], 'SE' = m1.beta.stats[,2], 'tstat' = m1.beta.stats[,3], 'pval' = m1.beta.stats[,4])
+print(beta.stats.lm)
+print(beta.stats.manual)
+identical(beta.stats.manual, beta.stats.lm)
 ```
 
 ?apropos()
