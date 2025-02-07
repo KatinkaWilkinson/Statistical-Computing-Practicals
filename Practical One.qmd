@@ -1,11 +1,92 @@
 ---
 title: "Practical One"
+author: "Katinka Wilkinson - WLKKAT009"
 ---
 
-## Quarto
+## Question 1
 
-Quarto enables you to weave together content and executable code into a finished document. To learn more about Quarto see <https://quarto.org>.
+Find all rows in “airquality” that have missing values. Note that the airquality dataset in R is always available (just type airquality in the console to see it).
 
 ```{r}
-1 + 1
+df <- datasets::airquality
+df_missing_vals <- df[is.na(df$Ozone) | is.na(df$Solar.R) | is.na(df$Wind) | is.na(df$Month) | is.na(df$Day),]
+head(df_missing_vals)
 ```
+
+## Question 2
+
+Find mean, sd, min, max for each of temperature and ozone level.
+
+```{r}
+ozone_data <- df[!is.na(df$Ozone),1]
+ozone_mean <- mean(ozone_data)
+ozone_sd <- sd(ozone_data)
+ozone_min <- min(ozone_data)
+ozone_max <- max(ozone_data)
+ozone_statistics <- paste("OZONE STATISTICS: mean", ozone_mean, ", sd", ozone_sd, ", min", ozone_min, ", max", ozone_max)
+print(ozone_statistics)
+```
+
+```{r}
+temp_data <- df[!is.na(df$Temp), 4]
+temp_mean <- mean(temp_data)
+temp_sd <- sd(temp_data)
+temp_min <- min(temp_data)
+temp_max <- max(temp_data)
+temp_statistics <- paste("TEMPERATURE STATISTICS: mean", temp_mean, ", sd", temp_sd, ", min", temp_min, ", max", temp_max)
+print(temp_statistics)
+```
+
+## Question 3
+
+For linear regression, parameter estimates can be found as follows: $\hat{\beta} = {X^TX}^{-1}X^TY$
+
+The standard error is found using the formula:
+$VAR(\hat{\beta}) = \hat{\sigma}^2(X^TX)^{-1}$
+
+Here, Y is the response variable, and X is the design matrix. The cars data (an R data set, also always available in R) contains two variables: speed and distance to stop. Fit a simple linear regression model to these data, i.e. find the estimates, using the equation above, and matrix calcuations in R.
+
+```{r}
+solve.beta <- function(X, Y){
+  #calc beta
+  beta <- solve(t(X) %*% X) %*% t(X) %*% Y
+  
+  #calc error
+  residuals <- Y -(X %*% beta)
+  S.squared <- 1/(length(Y)-length(beta)) * t(residuals) %*% residuals
+  SE = sqrt(as.numeric(S.squared) * diag(solve(t(X) %*% X)))
+  
+  #calc tstat
+  tstat <- beta/SE
+  
+  #calc pval
+  df <- length(Y)-2
+  pval <- 2*(1-pt(abs(tstat), df))
+  
+  
+  return(list('beta' = beta, 'SE' = SE, 'tstat' = tstat, 'pval'=pval))
+}
+
+
+df_cars <- datasets::cars
+speed <- df_cars$speed
+dist <- df_cars$dist
+```
+
+```{r}
+response <- matrix(dist, ncol = 1) # response
+design.matrix <- cbind(1, speed) # design matrix has first column as the intercept (1s) and second column as predictor
+print(solve.beta(design.matrix, response))
+```
+
+## Question 4
+
+Check that you get the same estimates as when fitting the linear regression model using lm() in R.
+
+```{r}
+m1 <- lm(df_cars$dist ~ df_cars$speed)
+summary(m1)
+
+```
+
+?apropos()
