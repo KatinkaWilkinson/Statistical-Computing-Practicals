@@ -66,14 +66,13 @@ solve.beta <- function(X, Y){
   
   return(list('beta' = beta, 'SE' = SE, 'tstat' = tstat, 'pval'=pval))
 }
-
-
-df_cars <- datasets::cars
-speed <- df_cars$speed
-dist <- df_cars$dist
 ```
 
 ```{r}
+df_cars <- datasets::cars
+speed <- df_cars$speed
+dist <- df_cars$dist
+
 response <- matrix(dist, ncol = 1) # response
 design.matrix <- cbind(1, speed) # design matrix has first column as the intercept (1s) and second column as predictor
 print(solve.beta(design.matrix, response))
