@@ -1,0 +1,41 @@
+---
+title: "Practical Day Four"
+author: "Katinka Wilkinson - WLKKAT009"
+date: "09/02/2025"
+---
+
+## Setup
+
+```{r}
+# Install tidyverse if not already installed
+if (!requireNamespace("tidyverse", quietly = TRUE)) {
+  install.packages("tidyverse")
+}
+library(tidyverse)
+
+# Install and load nycflights13 for flight data
+if (!requireNamespace("nycflights13", quietly = TRUE)) {
+  install.packages("nycflights13")
+}
+library(nycflights13)
+
+library(tidyr)
+library(dplyr)
+```
+
+## Question 1
+
+```{r}
+data(flights, package = "nycflights13")
+flights.tibble <- as_tibble(flights)
+flights.tibble
+```
+
+## Question 2
+
+```{r}
+dplyr::glimpse(flights) # check whether distance contains any NA values
+flights |> filter(month == 1) |> group_by(carrier) |> summarise(mean_distance = mean(distance, na.rm = TRUE), sd_distance = sd(distance, na.rm = TRUE))
+```
+
+## Question 3
