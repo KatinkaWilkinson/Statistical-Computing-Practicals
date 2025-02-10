@@ -1,0 +1,9 @@
+---
+title: "Practical Two"
+author: "Katinka Wilkinson"
+format: html
+---
+
+## Question 1
+
+
