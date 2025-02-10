@@ -1,9 +1,68 @@
 ---
 title: "Practical Two"
 author: "Katinka Wilkinson"
+date: "07/02/2025"
 format: html
 ---
 
 ## Question 1
+
+## Part 1: Generating Simulated Data
+```{r}
+set.seed(1)
+x <- 1:100
+y <- sin(x/10) + rnorm(100, 0, 0.2^2)
+head(y)
+```
+```{r}
+plot(x, y)
+```
+
+## Part 2: Implementing the LOWESS Algorithm
+
+```{r}
+customLowess <- function(x, y, f){
+# A function that implements the LOWESS algorithm and returns smoothed values.
+# 
+# Args:
+#   x (numeric vector) - the x values in the data set
+#   y (numeric vector) - the y values in the data set
+#   f (numeric) - the spac of the smoothing where 0<f<1
+# 
+# Return:
+#   y (numeric vector) - the smoothed y values
+  
+  # Span
+  k <- floor(f*length(x)) # computing the number of neighbouring points used for smoothing
+
+  smoothened_ys <- numeric(length(x))
+  
+  for (i in 1:length(x)) {
+    # Computing weights
+    current_x <- x[i]
+    distances <- abs(x - current_x)
+    all_values <- cbind(x, distances, y)
+    sorted_values <- all_values[order(all_values[,2]),]
+    k_neighbours <- sorted_values[1:k,]
+    d_max <- k_neighbours[k,2]
+    weights <- (1-(k_neighbours[,2]/d_max)^3)^3
+    
+    # Weighted Regression
+    W = diag(weights, ncol=k)
+    x_neigh <- cbind(1,k_neighbours[,1]) # here, x is a design matrix, meaning that the first column is simply a coulmn on 1s
+    y_neigh <- k_neighbours[,3]
+    betas <- solve(t(x_neigh) %*% W %*% x_neigh) %*% t(x_neigh) %*% y_neigh
+    smoothened_ys[i] = betas[1,1] + betas[2,1]*current_x
+  }
+  return(smoothened_ys)
+}
+
+smooth_ys <- customLowess(x,y,0.2)
+plot(x,smooth_ys)
+```
+## Question 3
+
+lowess_output <- lowess(x, y, 0.2)
+plot(x, lowess_output$y)
 
 
