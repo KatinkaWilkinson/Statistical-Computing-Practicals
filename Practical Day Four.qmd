@@ -39,3 +39,7 @@ flights |> filter(month == 1) |> group_by(carrier) |> summarise(mean_distance = 
 ```
 
 ## Question 3
+
+```{r}
+
+```
