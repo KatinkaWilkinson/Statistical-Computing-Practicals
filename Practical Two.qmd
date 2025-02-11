@@ -9,13 +9,16 @@ format: html
 
 ## Part 1: Generating Simulated Data
 ```{r}
+library(ggplot2)
 set.seed(1)
 x <- 1:100
 y <- sin(x/10) + rnorm(100, 0, 0.2^2)
 head(y)
 ```
 ```{r}
-plot(x, y)
+ggplot(mapping = aes(x = x, y = y)) + 
+  geom_point() + 
+  labs(title = "Raw data")
 ```
 
 ## Part 2: Implementing the LOWESS Algorithm
@@ -58,12 +61,18 @@ customLowess <- function(x, y, f){
 }
 
 smooth_ys <- customLowess(x,y,0.2)
-plot(x,smooth_ys)
+
+ggplot(mapping = aes(x = x, y = smooth_ys)) +
+  geom_point() +
+  labs(title = "Data smoothened using custom LOWESS function", x = "x", y = "y")
 ```
 ## Question 3
 
 ```{r}
 lowess_output <- lowess(x, y, 0.2)
-plot(x, lowess_output$y)
+
+ggplot(mapping = aes(x = x, y = lowess_output$y)) + 
+  geom_point() +
+  labs(title = "Data smoothened using built-in lowess function",x = "x", y = "y")
 ```
 
