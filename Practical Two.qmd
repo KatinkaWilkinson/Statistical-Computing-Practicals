@@ -51,7 +51,7 @@ customLowess <- function(x, y, f){
     W = diag(weights, ncol=k)
     x_neigh <- cbind(1,k_neighbours[,1]) # here, x is a design matrix, meaning that the first column is simply a coulmn on 1s
     y_neigh <- k_neighbours[,3]
-    betas <- solve(t(x_neigh) %*% W %*% x_neigh) %*% t(x_neigh) %*% y_neigh
+    betas <- solve(t(x_neigh) %*% W %*% x_neigh) %*% t(x_neigh) %*% W %*% y_neigh
     smoothened_ys[i] = betas[1,1] + betas[2,1]*current_x
   }
   return(smoothened_ys)
@@ -62,7 +62,8 @@ plot(x,smooth_ys)
 ```
 ## Question 3
 
+```{r}
 lowess_output <- lowess(x, y, 0.2)
 plot(x, lowess_output$y)
-
+```
 
